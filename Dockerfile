@@ -1,15 +1,19 @@
-FROM alpine:3.1
+# Use node 4.4.5 LTS
+FROM node:4.4.5
+ENV LAST_UPDATED 20160605T165400
 
-# Update
-RUN apk add --update nodejs
+# Copy source code
+COPY . /app
 
-# Install app dependencies
-COPY package.json /src/package.json
-RUN cd /src; npm install
+# Change working directory
+WORKDIR /app
 
-# Bundle app source
-COPY . /src
+# Install dependencies
+RUN npm install
 
-EXPOSE  8080
-CMD ["node", "/src/index.js"]
+# Expose API port to the outside
+EXPOSE 80
+
+# Launch application
+CMD ["npm","start"]
 
